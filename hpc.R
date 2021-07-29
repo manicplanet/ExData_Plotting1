@@ -22,28 +22,22 @@ library("rio")
 export(df, "household_power_consumption.csv")
 
 #read in new csv, line by line, limited by sql conditional for dates
-df <- read.csv.sql("household_power_consumption.csv", 
-                      sql = "select * from file where Date in ('01/02/2007','02/02/2007')")
-summary(df)
+limited <- read.csv.sql("household_power_consumption.csv", 
+                      sql = "select * from file where where Date = '1/2/2007' or Date = '2/2/2007'")
+summary(limited)
 
-head(df)
+head(limited)
 
 """ Produces? :
-
-Date     Time Global_active_power Global_reactive_power Voltage Global_intensity Sub_metering_1 Sub_metering_2
-1 16/12/2006 17:24:00               4.216                 0.418 234.840           18.400          0.000          1.000
-2 16/12/2006 17:25:00               5.360                 0.436 233.630           23.000          0.000          1.000
-3 16/12/2006 17:26:00               5.374                 0.498 233.290           23.000          0.000          2.000
-4 16/12/2006 17:27:00               5.388                 0.502 233.740           23.000          0.000          1.000
-5 16/12/2006 17:28:00               3.666                 0.528 235.680           15.800          0.000          1.000
-6 16/12/2006 17:29:00               3.520                 0.522 235.020           15.000          0.000          2.000
-  Sub_metering_3
-1             17
-2             16
-3             17
-4             17
-5             17
-6             17"""
+Error in connection_connect(dbname, loadable.extensions, flags, vfs, extended_types) : 
+  function 'Rcpp_precious_remove' not provided by package 'Rcpp'
+Error in !dbPreExists : invalid argument type
+> summary(limited)
+Error in summary(limited) : object 'limited' not found
+> 
+> head(limited)
+Error in head(limited) : object 'limited' not found
+ """
 
 ######################################################################################################################################
 
