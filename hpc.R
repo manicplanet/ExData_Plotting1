@@ -14,11 +14,40 @@ For each plot you should
 
 When you are finished with the assignment, push your git repository to GitHub so that the GitHub version of your repository is up to date. There should be four PNG files and four R code files."""
 
-
-
 df <- read.delim("household_power_consumption.txt", sep = ";") #load file from local drive
-#df <- subset(file[file$Date >= "02/01/2007" & file$Date <= "02/02/2007"]) #this DOES NOT WORK!
+
+#convert .txt to .csv
+install.packages("rio")
+library("rio")
+
+export(df, "household_power_consumption.csv")
+
+#write.csv(iris, "iris.csv", quote = FALSE, row.names = FALSE)
+df <- read.csv.sql("household_power_consumption.csv", 
+                      sql = "select * from file where Date = '02/01/2007' OR Date = '02/02/2007") #conditiona clause NOT limiting rows loaded
+summary(df)
+
 head(df)
+
+""" Produces? :
+
+Date     Time Global_active_power Global_reactive_power Voltage Global_intensity Sub_metering_1 Sub_metering_2
+1 16/12/2006 17:24:00               4.216                 0.418 234.840           18.400          0.000          1.000
+2 16/12/2006 17:25:00               5.360                 0.436 233.630           23.000          0.000          1.000
+3 16/12/2006 17:26:00               5.374                 0.498 233.290           23.000          0.000          2.000
+4 16/12/2006 17:27:00               5.388                 0.502 233.740           23.000          0.000          1.000
+5 16/12/2006 17:28:00               3.666                 0.528 235.680           15.800          0.000          1.000
+6 16/12/2006 17:29:00               3.520                 0.522 235.020           15.000          0.000          2.000
+  Sub_metering_3
+1             17
+2             16
+3             17
+4             17
+5             17
+6             17"""
+
+######################################################################################################################################
+
 df[is.na(df)] <- 0 #replace NAs with 0s
 any(is.na(df)) # check for any NAs remaining - should return False
 class(df$Global_active_power) = "Numeric" #change class of Global_active_power column from character to numeric
