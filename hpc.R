@@ -19,12 +19,11 @@ df <- read.delim("household_power_consumption.txt", sep = ";") #load file from l
 #convert .txt to .csv
 install.packages("rio")
 library("rio")
-
 export(df, "household_power_consumption.csv")
 
-#write.csv(iris, "iris.csv", quote = FALSE, row.names = FALSE)
+#read in new csv, line by line, limited by sql conditional for dates
 df <- read.csv.sql("household_power_consumption.csv", 
-                      sql = "select * from file where Date = '02/01/2007' OR Date = '02/02/2007") #conditiona clause NOT limiting rows loaded
+                      sql = "select * from file where Date in ('01/02/2007','02/02/2007')")
 summary(df)
 
 head(df)
